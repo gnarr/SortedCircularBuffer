@@ -1,24 +1,37 @@
 {
-  "name": "cob",
+  "name": "sorted-circular-buffer",
   "version": "1.0.0",
-  "description": "",
-  "main": "cob.js",
+  "description": "Sorted Circular Buffer",
+  "main": "dist/SortedCircularBuffer.jsx",
+  "types": "dist/SortedCircularBuffer.d.ts",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jest": "^23.3.12",
+    "@types/node": "^10.12.18",
+    "jest": "^23.6.0",
+    "ts-jest": "^23.10.5",
+    "typescript": "^3.2.2"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gnarr/cob.git"
+    "url": "git+https://github.com/gnarr/SortedCircularBuffer.git"
   },
   "keywords": [
+    "Sorted",
     "Circular",
-    "Object",
     "Buffer"
   ],
   "author": "Gunnar Cortes Heimisson",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/gnarr/cob/issues"
+    "url": "https://github.com/gnarr/SortedCircularBuffer/issues"
   },
-  "homepage": "https://github.com/gnarr/cob#readme"
+  "homepage": "https://github.com/gnarr/SortedCircularBuffer#readme",
+  "jest": {
+    "testEnvironment": "node"
+  }
 }
