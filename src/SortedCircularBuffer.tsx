@@ -22,6 +22,26 @@ export class SortedCircularBuffer {
     return this.data[this.keys[index]];
   }
 
+  public getBySequence(sequence: number) {
+    return this.data[sequence];
+  }
+
+  public findContinuousSequenceFromLast(length: number) {
+    let progress = 1;
+    let sequence = -1;
+    for (var i = this.size - 1; i >= 0; --i) {
+      const nextSeq = parseInt(this.keys[i], 10);
+      if (sequence - nextSeq === 1) {
+        progress++;
+      }
+      if (progress === length) {
+        return i;
+      }
+      sequence = nextSeq;
+    }
+    return -1;
+  }
+
   public last() {
     const last = this.keys[this.keys.length - 1];
     return this.data[last];
