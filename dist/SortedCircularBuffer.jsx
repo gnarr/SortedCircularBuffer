@@ -17,6 +17,24 @@ var SortedCircularBuffer = /** @class */ (function () {
     SortedCircularBuffer.prototype.get = function (index) {
         return this.data[this.keys[index]];
     };
+    SortedCircularBuffer.prototype.getBySequence = function (sequence) {
+        return this.data[sequence];
+    };
+    SortedCircularBuffer.prototype.findContinuousSequenceFromLast = function (length) {
+        var progress = 1;
+        var sequence = -1;
+        for (var i = this.size - 1; i >= 0; --i) {
+            var nextSeq = parseInt(this.keys[i], 10);
+            if (sequence - nextSeq === 1) {
+                progress++;
+            }
+            if (progress === length) {
+                return i;
+            }
+            sequence = nextSeq;
+        }
+        return -1;
+    };
     SortedCircularBuffer.prototype.last = function () {
         var last = this.keys[this.keys.length - 1];
         return this.data[last];

@@ -5,6 +5,8 @@ export declare class SortedCircularBuffer {
     constructor(capacity: number);
     set(sequence: number, value: any): void;
     get(index: number): any;
+    getBySequence(sequence: number): any;
+    findContinuousSequenceFromLast(length: number): number;
     last(): any;
     readonly size: number;
     forEach(callback: (value: {}, index: number, array: {}[]) => void, thisArg?: any): void;
