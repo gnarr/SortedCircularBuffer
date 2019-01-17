@@ -13,4 +13,15 @@ test("", function () {
     expect(b.size).toBe(5);
     expect(b.get(0)).toBe("c");
     expect(b.getBySequence(9)).toBe("e");
+    expect(b.get(3)).toBe("d");
+    expect(b.getBySequence(7)).toBe("d");
+    b.delete(3);
+    expect(b.get(3)).toBe("e");
+    expect(b.getBySequence(7)).toBe(undefined);
+    b.set(7, "d");
+    expect(b.get(3)).toBe("d");
+    expect(b.getBySequence(7)).toBe("d");
+    b.deleteBySequence(7);
+    expect(b.get(3)).toBe("e");
+    expect(b.getBySequence(7)).toBe(undefined);
 });

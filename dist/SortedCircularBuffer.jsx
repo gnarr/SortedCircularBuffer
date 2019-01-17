@@ -20,6 +20,14 @@ var SortedCircularBuffer = /** @class */ (function () {
     SortedCircularBuffer.prototype.getBySequence = function (sequence) {
         return this.data[sequence];
     };
+    SortedCircularBuffer.prototype.delete = function (index) {
+        delete this.data[this.keys[index]];
+        this.keys = Object.keys(this.data);
+    };
+    SortedCircularBuffer.prototype.deleteBySequence = function (sequence) {
+        delete this.data[sequence];
+        this.keys = Object.keys(this.data);
+    };
     SortedCircularBuffer.prototype.findContinuousSequenceFromLast = function (length) {
         var progress = 1;
         var sequence = -1;

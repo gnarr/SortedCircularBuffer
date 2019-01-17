@@ -26,6 +26,16 @@ export class SortedCircularBuffer {
     return this.data[sequence];
   }
 
+  public delete(index: number) {
+    delete this.data[this.keys[index]];
+    this.keys = Object.keys(this.data);
+  }
+
+  public deleteBySequence(sequence: number) {
+    delete this.data[sequence];
+    this.keys = Object.keys(this.data);
+  }
+
   public findContinuousSequenceFromLast(length: number) {
     let progress = 1;
     let sequence = -1;

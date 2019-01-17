@@ -6,6 +6,8 @@ export declare class SortedCircularBuffer {
     set(sequence: number, value: any): void;
     get(index: number): any;
     getBySequence(sequence: number): any;
+    delete(index: number): void;
+    deleteBySequence(sequence: number): void;
     findContinuousSequenceFromLast(length: number): number;
     last(): any;
     readonly size: number;
