@@ -2,6 +2,7 @@ export declare class SortedCircularBuffer {
     private data;
     private capacity;
     private keys;
+    private keysExpired;
     constructor(capacity: number);
     set(sequence: number, value: any): void;
     get(index: number): any;

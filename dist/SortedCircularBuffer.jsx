@@ -5,30 +5,42 @@ var SortedCircularBuffer = /** @class */ (function () {
         this.capacity = capacity;
         this.data = {};
         this.keys = Object.keys(this.data);
+        this.keysExpired = false;
     }
     SortedCircularBuffer.prototype.set = function (sequence, value) {
         this.data[sequence] = value;
-        this.keys = Object.keys(this.data);
         if (this.size > this.capacity) {
             delete this.data[this.keys[0]];
-            this.keys = Object.keys(this.data);
         }
+        this.keysExpired = true;
     };
     SortedCircularBuffer.prototype.get = function (index) {
+        if (this.keysExpired) {
+            this.keys = Object.keys(this.data);
+            this.keysExpired = false;
+        }
         return this.data[this.keys[index]];
     };
     SortedCircularBuffer.prototype.getBySequence = function (sequence) {
         return this.data[sequence];
     };
     SortedCircularBuffer.prototype.delete = function (index) {
+        if (this.keysExpired) {
+            this.keys = Object.keys(this.data);
+            this.keysExpired = false;
+        }
         delete this.data[this.keys[index]];
-        this.keys = Object.keys(this.data);
+        this.keysExpired = true;
     };
     SortedCircularBuffer.prototype.deleteBySequence = function (sequence) {
         delete this.data[sequence];
-        this.keys = Object.keys(this.data);
+        this.keysExpired = true;
     };
     SortedCircularBuffer.prototype.findContinuousSequenceFromLast = function (length) {
+        if (this.keysExpired) {
+            this.keys = Object.keys(this.data);
+            this.keysExpired = false;
+        }
         var progress = 1;
         var sequence = -1;
         for (var i = this.size - 1; i >= 0; --i) {
@@ -44,17 +56,29 @@ var SortedCircularBuffer = /** @class */ (function () {
         return -1;
     };
     SortedCircularBuffer.prototype.last = function () {
+        if (this.keysExpired) {
+            this.keys = Object.keys(this.data);
+            this.keysExpired = false;
+        }
         var last = this.keys[this.keys.length - 1];
         return this.data[last];
     };
     Object.defineProperty(SortedCircularBuffer.prototype, "size", {
         get: function () {
+            if (this.keysExpired) {
+                this.keys = Object.keys(this.data);
+                this.keysExpired = false;
+            }
             return this.keys.length;
         },
         enumerable: true,
         configurable: true
     });
     SortedCircularBuffer.prototype.forEach = function (callback, thisArg) {
+        if (this.keysExpired) {
+            this.keys = Object.keys(this.data);
+            this.keysExpired = false;
+        }
         var that = thisArg || this;
         var keys = that.keys;
         var values = Object.values(that.data);

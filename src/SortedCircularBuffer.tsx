@@ -2,23 +2,28 @@ export class SortedCircularBuffer {
   private data: any;
   private capacity: number;
   private keys: string[];
+  private keysExpired: boolean;
 
   public constructor(capacity: number) {
     this.capacity = capacity;
     this.data = {};
     this.keys = Object.keys(this.data);
+    this.keysExpired = false;
   }
 
   public set(sequence: number, value: any) {
     this.data[sequence] = value;
-    this.keys = Object.keys(this.data);
     if (this.size > this.capacity) {
       delete this.data[this.keys[0]];
-      this.keys = Object.keys(this.data);
     }
+    this.keysExpired = true;
   }
 
   public get(index: number) {
+    if (this.keysExpired) {
+      this.keys = Object.keys(this.data);
+      this.keysExpired = false;
+    }
     return this.data[this.keys[index]];
   }
 
@@ -27,16 +32,24 @@ export class SortedCircularBuffer {
   }
 
   public delete(index: number) {
+    if (this.keysExpired) {
+      this.keys = Object.keys(this.data);
+      this.keysExpired = false;
+    }
     delete this.data[this.keys[index]];
-    this.keys = Object.keys(this.data);
+    this.keysExpired = true;
   }
 
   public deleteBySequence(sequence: number) {
     delete this.data[sequence];
-    this.keys = Object.keys(this.data);
+    this.keysExpired = true;
   }
 
   public findContinuousSequenceFromLast(length: number) {
+    if (this.keysExpired) {
+      this.keys = Object.keys(this.data);
+      this.keysExpired = false;
+    }
     let progress = 1;
     let sequence = -1;
     for (var i = this.size - 1; i >= 0; --i) {
@@ -53,11 +66,19 @@ export class SortedCircularBuffer {
   }
 
   public last() {
+    if (this.keysExpired) {
+      this.keys = Object.keys(this.data);
+      this.keysExpired = false;
+    }
     const last = this.keys[this.keys.length - 1];
     return this.data[last];
   }
 
   public get size() {
+    if (this.keysExpired) {
+      this.keys = Object.keys(this.data);
+      this.keysExpired = false;
+    }
     return this.keys.length;
   }
 
@@ -65,6 +86,10 @@ export class SortedCircularBuffer {
     callback: (value: {}, index: number, array: {}[]) => void,
     thisArg?: any
   ) {
+    if (this.keysExpired) {
+      this.keys = Object.keys(this.data);
+      this.keysExpired = false;
+    }
     const that = thisArg || this;
     const keys = that.keys;
     const values = Object.values(that.data);
