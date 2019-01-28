@@ -1,15 +1,29 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var SortedCircularBuffer = /** @class */ (function () {
-    function SortedCircularBuffer(capacity) {
+    function SortedCircularBuffer(capacity, items) {
         this.capacity = capacity;
         this.data = {};
+        if (items) {
+            for (var _i = 0, items_1 = items; _i < items_1.length; _i++) {
+                var item = items_1[_i];
+                this.data[item.sequence] = item;
+            }
+            if (items.length > this.capacity) {
+                this.keys = Object.keys(this.data);
+                var deleteCount = this.keys.length - this.capacity;
+                for (var i = 0; i < deleteCount; i++) {
+                    delete this.data[this.keys[i]];
+                }
+            }
+        }
         this.keys = Object.keys(this.data);
         this.keysExpired = false;
     }
     SortedCircularBuffer.prototype.set = function (sequence, value) {
         this.data[sequence] = value;
         if (this.size > this.capacity) {
+            this.keys = Object.keys(this.data);
             delete this.data[this.keys[0]];
         }
         this.keysExpired = true;

@@ -1,12 +1,31 @@
+import { Interface } from "readline";
+
+interface SequenceObject {
+  sequence: number;
+  [others: string]: any;
+}
+
 export class SortedCircularBuffer {
   private data: any;
   private capacity: number;
   private keys: string[];
   private keysExpired: boolean;
 
-  public constructor(capacity: number) {
+  public constructor(capacity: number, items?: SequenceObject[]) {
     this.capacity = capacity;
     this.data = {};
+    if (items) {
+      for (const item of items) {
+        this.data[item.sequence] = item;
+      }
+      if (items.length > this.capacity) {
+        this.keys = Object.keys(this.data);
+        const deleteCount = this.keys.length - this.capacity;
+        for (let i = 0; i < deleteCount; i++) {
+          delete this.data[this.keys[i]];
+        }
+      }
+    }
     this.keys = Object.keys(this.data);
     this.keysExpired = false;
   }
@@ -14,6 +33,7 @@ export class SortedCircularBuffer {
   public set(sequence: number, value: any) {
     this.data[sequence] = value;
     if (this.size > this.capacity) {
+      this.keys = Object.keys(this.data);
       delete this.data[this.keys[0]];
     }
     this.keysExpired = true;

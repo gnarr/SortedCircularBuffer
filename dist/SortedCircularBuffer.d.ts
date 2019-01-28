@@ -1,9 +1,13 @@
+interface SequenceObject {
+    sequence: number;
+    [others: string]: any;
+}
 export declare class SortedCircularBuffer {
     private data;
     private capacity;
     private keys;
     private keysExpired;
-    constructor(capacity: number);
+    constructor(capacity: number, items?: SequenceObject[]);
     set(sequence: number, value: any): void;
     get(index: number): any;
     getBySequence(sequence: number): any;
@@ -14,3 +18,4 @@ export declare class SortedCircularBuffer {
     readonly size: number;
     forEach(callback: (value: {}, index: number, array: {}[]) => void, thisArg?: any): void;
 }
+export {};
