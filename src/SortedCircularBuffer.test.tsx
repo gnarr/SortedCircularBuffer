@@ -110,4 +110,6 @@ test("", () => {
   ];
   const c = new SortedCircularBuffer(5, data);
   expect(c.size).toBe(5);
+  expect(c.getBySequence(5253187)).toBeUndefined();
+  expect(c.getBySequence(5253188).path).toBe("400/vn2kl4gGG.ts");
 });
